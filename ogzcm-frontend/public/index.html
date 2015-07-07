@@ -13,6 +13,10 @@
         <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
         <!-- Angular JS v1.3.13 -->
         <script type="text/javascript" src="js/angular.min.js"></script>
+        <!-- Google ReCaptcha API -->
+        <script src="//www.google.com/recaptcha/api.js?render=explicit&onload=vcRecaptchaApiLoaded" async defer></script>
+        <!-- Angular Recaptcha -->
+        <script type="text/javascript" src="js/angular-recaptcha.min.js"></script>
         <!-- Angular Bootstrap UI -->
         <script type="text/javascript" src="js/ui-bootstrap-tpls-0.13.0.min.js"></script>
         <!-- My JS -->
@@ -47,6 +51,15 @@
                         <div class="col-md-2">
                             <input type="text" ng-model="book.author" />
                         </div>
+                    </div>
+                    <div class="row recaptcha">
+                        <div
+                            vc-recaptcha
+                            theme="'light'"
+                            key="model.key"
+                            on-create="setWidgetId(widgetId)"
+                            on-success="setResponse(response)"
+                        ></div>
                     </div>
                 </div>
                 <div class="modal-footer">
