@@ -1,1 +1,1 @@
-dir_to_exclude/ ogzcm-backend/bin
+*.class
