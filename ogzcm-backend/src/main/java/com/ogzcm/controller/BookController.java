@@ -22,7 +22,7 @@ import com.ogzcm.template.beans.service.BookService;
 @RestController
 public class BookController {
 
-	final Logger logger = LoggerFactory.getLogger(BookController.class);
+	private static final Logger logger = LoggerFactory.getLogger(BookController.class);
 	
 	@Resource(name="redisTemplate")
 	private RedisTemplate<String, Object> redisTemplate;
@@ -46,18 +46,16 @@ public class BookController {
 	}
 	
 	@RequestMapping("/saveBook")
-	public SimpleResponse saveBook(@RequestParam(value="book") String bookJson, HttpServletResponse resp) {
+	public SimpleResponse saveBook(@RequestParam(value="book") String bookJson, @RequestParam(value="captcha", required=false) String captchaResponse, HttpServletResponse resp) {
 		RestServiceHelper.setResponseHeader(resp);
 
 		SimpleResponse simpleResponse = new SimpleResponse();
 		try {
 			Gson gson = new Gson();
 			Book book = gson.fromJson(bookJson, Book.class);
-			if(book.getName() == null || book.getAuthor() == null || 
-					book.getName().length() < 1 || book.getAuthor().length() < 1) {
-				simpleResponse.setType(ResponseType.FAIL.getText());
-				simpleResponse.setMessage("Book's info should be provided.");
-			} else {
+			
+			simpleResponse = validateSaveBook(book, captchaResponse);
+			if(simpleResponse.getType().equals(ResponseType.SUCCESS.getText())) {
 				if(book.getId() > 0){
 					bookService.update(book);
 					simpleResponse.setMessage(book.getName() + " has been updated.");
@@ -74,7 +72,25 @@ public class BookController {
 		return simpleResponse;
 	}
     
-    @RequestMapping("/deleteBook")
+	private SimpleResponse validateSaveBook(Book book, String captchaResponse) {
+		SimpleResponse simpleResponse = new SimpleResponse();
+		
+		// Not allowed empty string book name or author
+		if(book.getName() == null || book.getName().length() < 1 ||
+		   book.getAuthor() == null || book.getAuthor().length() < 1) {
+			simpleResponse.setType(ResponseType.FAIL.getText());
+			simpleResponse.setMessage("Book info should be provided.");
+		}
+		// Validate captcha
+		CaptchaVerifier verifier = new CaptchaVerifier();
+		if(!verifier.verifyCaptcha(captchaResponse)){
+			simpleResponse.setType(ResponseType.FAIL.getText());
+			simpleResponse.setMessage("Captcha should be selected.");
+		}
+		return simpleResponse;
+	}
+
+	@RequestMapping("/deleteBook")
     public SimpleResponse deleteBook(@RequestParam(value="bookId") long id, HttpServletResponse resp) {
     	RestServiceHelper.setResponseHeader(resp);
     	
@@ -83,10 +99,11 @@ public class BookController {
     		bookService.delete(id);
     		simpleResponse.setMessage("It has been deleted successfully.");
     	} catch (Exception ex) {
-    		logger.error("Got exception by method deleteBook " ,ex);
+    		logger.error("Got exception by method deleteBook ", ex);
 			simpleResponse.setType(ResponseType.FAIL.getText());
 			simpleResponse.setMessage("An unexpected error has been occurred, try again later.");
     	}
     	return simpleResponse;
     }
+	
 }
