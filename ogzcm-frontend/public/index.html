@@ -1,0 +1,108 @@
+<doctype html>
+<html ng-app="libraryApp">
+	<head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Library Application</title>
+        <!-- BootStrap Min CSS -->
+        <link rel="stylesheet" href="css/bootstrap.min.css" />
+        <!-- My Css -->
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <!-- Jquery 1.11.3 -->
+        <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+        <!-- Angular JS v1.3.13 -->
+        <script type="text/javascript" src="js/angular.min.js"></script>
+        <!-- Angular Bootstrap UI -->
+        <script type="text/javascript" src="js/ui-bootstrap-tpls-0.13.0.min.js"></script>
+        <!-- My JS -->
+        <script type="text/javascript" src="js/spa.js"></script>
+	</head>
+
+	<body>
+        <!-- IndexCtrl -->
+        <div ng-controller="IndexCtrl">
+
+            <!-- Modal Dialog for create/update book -->
+            <script type="text/ng-template" id="createUpdateBookModal.html">
+                <div class="modal-header">
+                    <h3 class="modal-title">{{title}} Book</h3>
+                </div>
+                <div class="modal-body">
+                    <!-- Modal alerts -->
+                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+                    <div class="row" style="margin-bottom:5px">
+                        <div class="col-md-2">
+                            Name
+                        </div>
+                        <div class="col-md-2" style="margin-bottom:5px">
+                            <input type="text" ng-model="book.name" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            Author
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" ng-model="book.author" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="ok()">OK</button>
+                    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                </div>
+            </script>
+
+            <!-- Modal Dialog for confirming book deletion -->
+            <script type="text/ng-template" id="deleteBookModal.html">
+                <div class="modal-header">
+                    <h3 class="modal-title">{{title}} Book</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="margin-bottom:5px; margin-left:5px;">
+                        {{book.name}} will be deleted, are you sure?
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="ok()">OK</button>
+                    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                </div>
+            </script>
+
+            <!-- Main body -->
+            <div class="container">
+                <!-- Main alerts -->
+                <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+                <div class="row" style="padding:8px; margin:5px 0px 0px 5px;">
+                    <button type="button" class="btn btn-default btn-md" ng-click="open('Create', newBook)">
+                        <span class="glyphicon glyphicon-plus"></span> New Book
+                    </button>
+                </div>
+
+                <div class="row rounded" style="padding:8px; margin-bottom:5px; font-weight:bold; background-color:#eee; border-radius:5px">
+                        <div class="col-md-5">Book</div>
+                        <div class="col-md-5">Author</div>
+                </div>
+                <div ng-repeat="book in books">
+                    <div class="row" style="margin-bottom:5px">
+                        <div class="col-md-5">{{book.name}}</div>
+                        <div class="col-md-5">{{book.author}}</div>
+                        <div class="col-md-2" style="float:right">
+                            <button type="button" class="btn btn-default btn-sm" ng-click="open('Update', book)">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="delete('Delete', book)" >
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+        <div class="loading-background"></div>
+        <img id='loading-text' src='img/loading-text.gif' />
+	</body>
+</html>
