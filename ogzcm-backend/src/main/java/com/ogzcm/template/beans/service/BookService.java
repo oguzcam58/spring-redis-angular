@@ -40,7 +40,7 @@ public class BookService extends AbstractRedisTemplate {
 	 * 
 	 * @return
 	 */
-	private long getNextId() {
+	public long getNextId() {
 		RedisTemplate<String, Object> template = getRedisTemplate();
 		
 		String key = tableName + "Id";

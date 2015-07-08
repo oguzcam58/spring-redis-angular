@@ -24,6 +24,7 @@ public class BookController {
 	
 	@Autowired
 	private BookService bookService;
+	private CaptchaVerifier verifier = new CaptchaVerifier();
 	
 	@RequestMapping("/getAllBooks")
 	public AllBooksResponse getAllBooks(HttpServletResponse resp) {
@@ -76,8 +77,6 @@ public class BookController {
 			simpleResponse.setType(ResponseType.FAIL.getText());
 			simpleResponse.setMessage("Book info should be provided.");
 		}
-		// Validate captcha
-		CaptchaVerifier verifier = new CaptchaVerifier();
 		if(!verifier.verifyCaptcha(captchaResponse)){
 			simpleResponse.setType(ResponseType.FAIL.getText());
 			simpleResponse.setMessage("Captcha should be selected.");

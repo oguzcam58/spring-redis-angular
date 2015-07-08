@@ -1,7 +1,7 @@
 package com.ogzcm.template;
 
 public abstract class AbstractBeanTemplate {
-	private long id;
+	protected long id;
 
 	public long getId() {
 		return id;

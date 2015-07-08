@@ -20,7 +20,7 @@ public class Book extends AbstractBeanTemplate implements Serializable {
 
 	public Book(long id, String name, String author) {
 		super();
-		this.setId(id);
+		this.id = id;
 		this.name = name;
 		this.author = author;
 	}
@@ -43,8 +43,28 @@ public class Book extends AbstractBeanTemplate implements Serializable {
     
 	@Override
 	public String toString() {
-		return "Id = " + this.getId() + " name = " + this.getName() + " author = " + this.getAuthor(); 
+		return "Id = " + this.getId() + ", name = " + this.getName() + ", author = " + this.getAuthor(); 
 	}
-    
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Book other = (Book) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 }
