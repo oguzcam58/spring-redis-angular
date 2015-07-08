@@ -12,10 +12,11 @@ public abstract class AbstractRedisTemplate {
 	@Resource(name="redisTemplate")
 	private RedisTemplate<String, Object> template;
 	
+	
 	public RedisTemplate<String, Object> getRedisTemplate() {
 		template.setHashKeySerializer(new StringRedisSerializer());
-		template.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
-		template.setValueSerializer( new GenericToStringSerializer< Object >( Object.class ) );
+		template.setHashValueSerializer(new Jackson2JsonRedisSerializer<Object>(Object.class));
+		template.setValueSerializer( new GenericToStringSerializer<Object>(Object.class));
 
 		return template;
 	}

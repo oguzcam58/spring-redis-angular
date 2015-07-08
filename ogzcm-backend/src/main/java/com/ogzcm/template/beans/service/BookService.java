@@ -1,7 +1,6 @@
 package com.ogzcm.template.beans.service;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -34,6 +33,7 @@ public class BookService extends AbstractRedisTemplate {
 		book.setId(getNextId());
 		getRedisTemplate().opsForHash().put(tableName, String.valueOf(book.getId()), book);
 	}
+
 
 	/**
 	 * Increment BookIdSequence by 1, return new sequence
@@ -71,17 +71,4 @@ public class BookService extends AbstractRedisTemplate {
 		}
 		return values;
 	}
-	
-	// TODO Delete before going live
-	public void deleteAll() {
-		Set<Object> keys = null;
-		Long size = getRedisTemplate().opsForHash().size(tableName);
-		if(size > 0){
-			keys = getRedisTemplate().opsForHash().keys(tableName);
-			System.out.println(keys);
-		}
-		
-		getRedisTemplate().delete(tableName);
-	}
-	
 }

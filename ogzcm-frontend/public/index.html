@@ -99,7 +99,7 @@
                         <div class="col-md-5">Book</div>
                         <div class="col-md-5">Author</div>
                 </div>
-                <div ng-repeat="book in books">
+                <div ng-repeat="book in books | orderBy:'id'">
                     <div class="row" style="margin-bottom:5px">
                         <div class="col-md-5">{{book.name}}</div>
                         <div class="col-md-5">{{book.author}}</div>
