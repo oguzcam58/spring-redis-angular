@@ -34,7 +34,6 @@ public class BookService extends AbstractRedisTemplate {
 		getRedisTemplate().opsForHash().put(tableName, String.valueOf(book.getId()), book);
 	}
 
-
 	/**
 	 * Increment BookIdSequence by 1, return new sequence
 	 * 
@@ -63,6 +62,10 @@ public class BookService extends AbstractRedisTemplate {
 		getRedisTemplate().opsForHash().delete(tableName, String.valueOf(id));
 	}
 
+	public void deleteAll() {
+		getRedisTemplate().delete(tableName);
+	}
+	
 	public List<Object> getAll() {
 		List<Object> values = null;
 		Long size = getRedisTemplate().opsForHash().size(tableName);
